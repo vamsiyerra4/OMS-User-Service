@@ -23,7 +23,7 @@ public class UserRequestDTO {
     private String email;
 
     @NotBlank(message = "Password required")
-    @Size(min = 3,max = 20,message = "Password must be between 8 to 20 characters")
+    @Size(min = 8,max = 20,message = "Password must be between 8 to 20 characters")
     private String password;
 
 

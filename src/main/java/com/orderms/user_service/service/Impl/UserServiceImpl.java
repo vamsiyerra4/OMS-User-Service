@@ -59,7 +59,11 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO updateUserById(Long Id, UserRequestDTO userRequestDTO) {
 
         User user = userRepository.findById(Id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        if(userRepository.existsByEmailAndIdNot(Id,userRequestDTO.getEmail())){
+            throw new DuplicateEmailException("Email already exists : " + userRequestDTO.getEmail());
+        }
 
         user.setName(userRequestDTO.getName());
         user.setEmail(userRequestDTO.getEmail());
@@ -72,7 +76,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUserById(Long Id) {
 
         User user = userRepository.findById(Id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         userRepository.delete(user);
 
